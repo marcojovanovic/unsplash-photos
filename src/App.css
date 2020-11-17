@@ -1,0 +1,44 @@
+*{
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+
+}
+
+body{
+
+  font-family: 'Jost', sans-serif;
+}
+
+
+.flex{
+  display:flex !important;
+}
+
+.mr-6{
+
+  margin-left: 5rem;
+}
+
+.card-close{
+
+  color:red;
+  position: absolute;
+  top:5px;
+  right: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.card{
+  position: relative;
+}
+
+.line-through{
+
+  text-decoration: line-through;
+
+}
