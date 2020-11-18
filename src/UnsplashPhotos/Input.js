@@ -1,4 +1,5 @@
 import React from 'react';
+import {FaSearch} from 'react-icons/fa'
 
 function Input({setQuery, handleQuery,}) {
   return (
@@ -10,7 +11,7 @@ function Input({setQuery, handleQuery,}) {
         onChange={(e)=> setQuery(e.target.value)}
         />
         <button type="submit" className="btn">
-          Search
+        <h2><FaSearch /></h2>
         </button>
       </form>
     </div>

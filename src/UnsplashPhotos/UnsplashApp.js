@@ -5,6 +5,11 @@ import Photo from './Photo';
 
 import './photos.css';
 
+let secretKey = `?client_id=${process.env.REACT_APP_SECRET_KEY}`
+
+let mainUrl = `https://api.unsplash.com/photos/`
+let searchUrl = `https://api.unsplash.com/search/photos/`
+
 function UnsplashApp() {
   const [page, setPage] = useState(0);
   const [photos, setPhotos] = useState([]);
@@ -35,50 +40,48 @@ function UnsplashApp() {
 
   const getPhotos = async () => {
     setLoading(true);
-
-    let urlScrool = `https://api.unsplash.com/photos/?page=${page}&&client_id=WWAWHaDBUkqNDGQaaXh0JXjoX34k567pJtd15hT5OY0`;
-
-    let searchUrl = `https://api.unsplash.com/search/photos?page=${page}&query=${query}&&client_id=WWAWHaDBUkqNDGQaaXh0JXjoX34k567pJtd15hT5OY0`;
-
+    let url;
 
     if (query.length > 0) {
-      const res = await fetch(searchUrl);
+      url = `${searchUrl}${secretKey}&&page=${page}&query=${query}`;
+    } else {
+      url = `${mainUrl}${secretKey}&&page=${page}`;
+    }
+
+    try {
+      const res = await fetch(url);
+
+      const data = await res.json();
+
+      setPhotos((oldPhotos) => {
+        if (query.length > 0) {
+          return [...oldPhotos, ...data.results];
+        } else {
+          return [...oldPhotos, ...data];
+        }
+      });
+
+      setLoading(false);
+    } catch(err){
+        console.log(err)
+        setLoading(false)
+
+    }
+  };
+    const handleQuery = async (e) => {
+      e.preventDefault();
+
+      let findUrl = `${searchUrl}${secretKey}&&page=${page}&query=${query}`;
+
+      const res = await fetch(findUrl);
 
       const data = await res.json();
 
       setPhotos((oldPhotos) => {
         return [...oldPhotos, ...data.results];
       });
+    };
 
-    } else {
-      const res = await fetch(urlScrool);
-
-      const data = await res.json();
-
-      setPhotos((oldPhotos) => {
-        return [...oldPhotos, ...data];
-      });
-    }
-
-    setLoading(false);
-  };
-
-  const handleQuery = async (e) => {
-    e.preventDefault();
-
-    let searchUrl = `https://api.unsplash.com/search/photos?page=${page}&query=${query}&&client_id=WWAWHaDBUkqNDGQaaXh0JXjoX34k567pJtd15hT5OY0`;
-
-    const res = await fetch(searchUrl);
-
-    const data = await res.json();
-
-    setPhotos((oldPhotos) => {
-      return [...oldPhotos, ...data.results];
-    });
-
-
-    
-  };
 
   return (
     <>
